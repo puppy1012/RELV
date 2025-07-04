@@ -1,14 +1,16 @@
 package com.example.demo.controller;
 
+import com.example.demo.controller.request.FindPostRequest;
 import com.example.demo.controller.request.PostRequest;
+import com.example.demo.controller.request.UpdatePostRequest;
 import com.example.demo.entity.Post;
 import com.example.demo.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 // 각종 디버깅 및 로그를 확인하기 위한 목적으로 사용합니다.
 // 이 내용이 추가된 이후 `log.info()` 형태로 내용을 확인 할 수 있습니다.
@@ -150,5 +152,67 @@ public class PostController {
 
         Post requestedPost = request.toPost();
         return postRepository.save(requestedPost);
+    }
+
+    @PostMapping("/post/find")
+    public Post findPost(@RequestBody FindPostRequest request) {
+        log.info("post find -> request: {}", request);
+
+        Long id = request.getPostId();
+        Optional<Post> maybePost = postRepository.findById(id);
+
+        if (maybePost.isEmpty()) {
+            return null;
+        }
+
+        return maybePost.get();
+    }
+
+    // GetMapping 내부에 `{id}` 형태로 표기된 것이 존재합니다.
+    // @PathVariable 의 경우 가변 인자에 해당합니다.
+    // id 값이 562번, 788번, 128722번
+    // 사전에 미리 번호를 알 수 없기 때문에 이러한 가변 처리가 필요합니다.
+    @GetMapping("/post/read/{id}")
+    public Post readPost(@PathVariable Long id) {
+        // @PathVariable 이 위의 `{id}` 형태로 만들어진 가변 정보를 실제 특정 데이터 타입(Long)으로 바꿉니다.
+        // 현재 케이스에서 id는 Long이 되었습니다.
+        log.info("post read -> id: {}", id);
+        Optional<Post> maybePost = postRepository.findById(id);
+
+        if (maybePost.isEmpty()) {
+            return null;
+        }
+
+        return maybePost.get();
+    }
+
+    @GetMapping("/post/list")
+    public List<Post> readPostList() {
+        return postRepository.findAll();
+    }
+
+    @GetMapping("/post/delete")
+    public void deletePost(@RequestParam Long id) {
+        log.info("post delete -> id: {}", id);
+
+        postRepository.deleteById(id);
+    }
+
+    @PostMapping("/post/update")
+    public Post updatePost(@RequestBody UpdatePostRequest request) {
+        log.info("post update -> request: {}", request);
+
+        Long postId = request.getPostId();
+        Optional<Post> maybePost = postRepository.findById(postId);
+
+        if (maybePost.isEmpty()) {
+            return null;
+        }
+
+        Post foundPost = maybePost.get();
+        foundPost.setTitle(request.getTitle());
+        foundPost.setContent(request.getContent());
+
+        return postRepository.save(foundPost);
     }
 }
