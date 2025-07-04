@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+// 코끼리 아이콘이 나올 때가 있고 나오지 않을 때가 있는데
+// `build.gradle` 에 변경이 발생하면 `코끼리` 가 나타납니다.
+// 이미 변경을 적용했다면 `코끼리` 가 사라집니다.
+dependencies {
+    // `org.springframework.boot:spring-boot-starter-data-jpa` 는
+    // Spring Framework에서 제공하는 JPA 라이브러리입니다.
+    // 이 라이브러리를 사용하기 위해 아래와 같이 `implementation` 을 작성해서 구성해줘야 합니다.
+    // `implementation`의 의미는 이 라이브러리를 사용할 때
+    // 컴파일 시에도 라이브러리를 사용해서 다른 코드가 참조할 수 있게 만들어주세요.
+    // 컴파일 시 <- 라는 것의 의미는 Java 컴파일러의 구동 방식과 관련이 있습니다.
+    // 기본적으로 Java 코드는 JVM 이라는 가상 머신이 있고
+    // Java Compiler라는 녀석이 함께 구동하여 코드를 동작시키게 됩니다.
+    // JVM은 Java Compiler가 Java 코드를 ByteCode 라는 형태로 작성합니다.
+    // 이 ByteCode를 JVM이라는 가상 머신이 읽어서 기계어로 바꿔줍니다.
+    // 여기서 기계어라는 것은 실제 컴퓨터가 보는 01010101 같은 것이라고 생각하면 되겠습니다.
+    // Java Compiler가 여러분들이 작성한 Java 코드 뿐만 아니고
+    // 아래와 같은 implementation 사항들을 함께 읽어서 ByteCode로 구성합니다.
+    // 그러므로 `implementation` 키워드를 붙여서
+    // JVM이 JPA 라이브러리와 함께 동작할 수 있도록 만들어줬다 볼 수 있습니다.
+
+    // ByteCode가 무엇인가? <- ByteCode는 Java Compiler가 만들어 놓는 파일입니다.
+    // 프로그램 실행 상황에서 우리가 눈으로 가시적으로 볼 수는 없습니다.
+    // 여러분들이 플레이 버튼을 눌러서 실행 할 때 내부적으로 진행되는 작업입니다.
+    
+    // Compiler는 무엇인가? <- 여러분들이 작성한 소스 코드
+    // 혹은 다른 사람들이 작성한 소스 코드, 또는 Spring 프레임워크 작성자들이 만든 소스 코드
+    // 위와 같은 소스 코드들을 입력하여 ByteCode 혹은 기계어를 만들어내는 소프트웨어
+    // (컴퓨터와 인간 사이의 번역기라고 생각해도 좋습니다)
+
+    // JVM이라는 가상 머신은 무엇인가? <- ByteCode를 실제로 읽을 수 있는 시스템 내부의 요소입니다.
+    // 여러분들이 플레이 버튼을 누르면 Java Compiler가 ByteCode를 작성하고
+    // JVM이 이 ByteCode를 읽어서 0101001 같은 `기계어` 를 만들면서 코드가 동작합니다.
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // `runtimeOnly` 의 경우 런타임에만 필요한 녀석입니다.
+    // 런타임이란 무엇인가? <- 프로그램이 동작하고 있는 상황 자체를 런타임이라고 합니다.
+    // 그러므로 위의 상황에서와 같이 Java Compiler가 코드를 컴파일 하는 상황은 발생하지 않습니다.
+    // runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.h2database:h2'
+    testImplementation 'com.h2database:h2'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
