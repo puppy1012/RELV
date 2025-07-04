@@ -20,6 +20,7 @@ public class SamplePost {
     String writer;      // 첫 생성은 작성자가 존재함, 수정 시 작성자는 변경할 수 없음
     String content;
 
+    // 생성, 수정, 삭제, 조회, 전체 조회
     public SamplePost(String title, String writer, String content) {
         this.title = title;
         this.writer = writer;
