@@ -7,10 +7,14 @@ import com.example.demo.entity.Post;
 import com.example.demo.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.hateoas.EntityModel;
+//import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+// http://localhost:8080/swagger-ui/index.html
 
 // 각종 디버깅 및 로그를 확인하기 위한 목적으로 사용합니다.
 // 이 내용이 추가된 이후 `log.info()` 형태로 내용을 확인 할 수 있습니다.
@@ -215,4 +219,17 @@ public class PostController {
 
         return postRepository.save(foundPost);
     }
+
+//    @GetMapping("/post/{id}")
+//    public EntityModel<Post> getPost(@PathVariable Long id) {
+//        Post post = postRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+//
+//        return EntityModel.of(
+//                post,
+//                WebMvcLinkBuilder.linkTo(
+//                        WebMvcLinkBuilder.methodOn(PostController.class).getPost(id)
+//                ).withSelfRel()
+//        );
+//    }
 }
