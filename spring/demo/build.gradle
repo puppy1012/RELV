@@ -63,8 +63,10 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     testImplementation 'com.h2database:h2'
 
+    // 동작에 대한 URL을 출력시켜줍니다
     // implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 
+    // REST API에 대한 문서화를 자동화
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
