@@ -60,9 +60,9 @@ dependencies {
     // 런타임이란 무엇인가? <- 프로그램이 동작하고 있는 상황 자체를 런타임이라고 합니다.
     // 그러므로 위의 상황에서와 같이 Java Compiler가 코드를 컴파일 하는 상황은 발생하지 않습니다.
     // runtimeOnly 'com.mysql:mysql-connector-j'
-    runtimeOnly 'com.h2database:h2'
-    testImplementation 'com.h2database:h2'
-
+//    runtimeOnly 'com.h2database:h2'
+//    testImplementation 'com.h2database:h2'
+    implementation 'mysql:mysql-connector-java:8.0.33' // MySQL 드라이버
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
